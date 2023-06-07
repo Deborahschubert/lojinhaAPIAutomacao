@@ -1,23 +1,13 @@
 package Modulos.produto;
 
-import Pojo.ComponentePojo;
-import Pojo.ProdutoPojo;
-import Pojo.UsuarioPojo;
 import dataFactory.ProdutoDataFactory;
 import dataFactory.UsuarioDataFactory;
-import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
-import io.restassured.specification.RequestSpecification;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import static io.restassured.RestAssured.*;
-import static io.restassured.matcher.RestAssuredMatchers.*;
 import static org.hamcrest.Matchers.*;
 
 @DisplayName("Testes de API Rest Módulo de Produto")
