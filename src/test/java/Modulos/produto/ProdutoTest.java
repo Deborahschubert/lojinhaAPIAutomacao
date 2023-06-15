@@ -7,13 +7,34 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import java.io.FileInputStream;
+import java.io.InputStream;
+import java.util.Properties;
+
 import static io.restassured.RestAssured.*;
 import static org.hamcrest.Matchers.*;
+
 
 @DisplayName("Testes de API Rest Módulo de Produto")
 public class ProdutoTest {
     private String token;
+    private String username;
+    private String password;
+    private String baseurl;
 
+    {
+        try (InputStream input = new FileInputStream("C:\Users\Deborah Schubert\IdeaProjects\LojinhaAPIAutomacao\config.properties")
+            Properties prop = new Properties();
+            prop.load(input);
+            this.baseurl = prop.getProperty("db.url");
+            this.username = prop.getProperty("db.user");
+            this.password = prop.getProperty("db.password");
+
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+    }
     @BeforeEach
     public void beforeEach() {
         // Configurando os dados da API Rest da Lojinha
