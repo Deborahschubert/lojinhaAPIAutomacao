@@ -7,34 +7,13 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import java.io.FileInputStream;
-import java.io.InputStream;
-import java.util.Properties;
-
 import static io.restassured.RestAssured.*;
 import static org.hamcrest.Matchers.*;
-
 
 @DisplayName("Testes de API Rest Módulo de Produto")
 public class ProdutoTest {
     private String token;
-    private String username;
-    private String password;
-    private String baseurl;
 
-    {
-        try (InputStream input = new FileInputStream("C:\Users\Deborah Schubert\IdeaProjects\LojinhaAPIAutomacao\config.properties")
-            Properties prop = new Properties();
-            prop.load(input);
-            this.baseurl = prop.getProperty("db.url");
-            this.username = prop.getProperty("db.user");
-            this.password = prop.getProperty("db.password");
-
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-
-    }
     @BeforeEach
     public void beforeEach() {
         // Configurando os dados da API Rest da Lojinha
@@ -45,11 +24,11 @@ public class ProdutoTest {
         this.token = given()
                 .contentType(ContentType.JSON)
                 .body(UsuarioDataFactory.criarUsuarioAdministrador())
-        .when()
+                .when()
                 .post("/v2/login")
-        .then()
+                .then()
                 .extract()
-                    .path("data.token");
+                .path("data.token");
 
     }
 
@@ -63,27 +42,27 @@ public class ProdutoTest {
                 .contentType(ContentType.JSON)
                 .header("token", this.token)
                 .body(ProdutoDataFactory.criarProdutoComumComValorIgualA(0.00))
-        .when()
+                .when()
                 .post("/v2/produtos")
-        .then()
+                .then()
                 .assertThat()
-                    .body("error", equalTo("O valor do produto deve estar entre R$ 0,01 e R$ 7.000,00"))
-                    .statusCode(422);
+                .body("error", equalTo("O valor do produto deve estar entre R$ 0,01 e R$ 7.000,00"))
+                .statusCode(422);
 
     }
     @Test
     @DisplayName("Validar que o valor do produto igual a 7000.00 não é permitido")
     public void testValidarLimitesMaiorSeteMilProibidosValorProduto() {
-       // Tentar inserir um produto com valor maior que 7000.00 e validar que a mensagem de erro foi apresentada e o
+        // Tentar inserir um produto com valor maior que 7000.00 e validar que a mensagem de erro foi apresentada e o
         // status code retornado foi 422
 
         given()
                 .contentType(ContentType.JSON)
                 .header("token", this.token)
                 .body(ProdutoDataFactory.criarProdutoComumComValorIgualA(7000.01))
-        .when()
+                .when()
                 .post("/v2/produtos")
-        .then()
+                .then()
                 .assertThat()
                 .body("error", equalTo("O valor do produto deve estar entre R$ 0,01 e R$ 7.000,00"))
                 .statusCode(422);
